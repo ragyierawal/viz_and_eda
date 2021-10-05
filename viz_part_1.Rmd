@@ -27,7 +27,6 @@ weather_df =
   select(name, id, everything())
 ```
 
-
 ## Scatterplot 
 
 tmax vs. tmin 
@@ -58,4 +57,46 @@ weather_df %>%
   geom_smooth(se = FALSE) + 
   facet_grid(. ~ name)
 ```
+
+Let's make one more scatterplot 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = date, y = tmax, size = prcp, color = name)) + 
+  geom_point(alpha = 0.3) + 
+  facet_grid(. ~ name) + 
+  geom_smooth(se = FALSE)
+```
+
+## Use data manipulation as part of this 
+
+```{r}
+weather_df %>% 
+  filter(name == "CentralPark_NY") %>% 
+  mutate(
+    tmax = tmax * (9/5) + 32,
+    tmin = tmin * (9/5) + 32
+  ) %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+## Stacking geoms
+
+Which geoms do you want? 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = date, y = tmax, color = name)) + 
+  geom_smooth()
+
+# don't have to have a scatterplot, can just graph the data with smooth curves --> don't recommend this, should show as much of the raw data as possible 
+```
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_hex()
+```
+
 
